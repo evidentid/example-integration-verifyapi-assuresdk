@@ -1,0 +1,14 @@
+{
+  "name": "@evidentid/e2e-example",
+  "version": "1.0.0",
+  "description": "Example VerifyAPI + AssureSDK integration",
+  "main": "Step1.js",
+  "author": "Evident ID, Inc.",
+  "license": "SEE LICENSE IN LICENSE",
+  "dependencies": {
+    "ejs": "2.5.8",
+    "email-validator": "1.1.1",
+    "express": "4.16.3",
+    "node-rest-client": "3.1.0"
+  }
+}
