@@ -1,37 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script type="text/javascript" src="https://cdn.evidentid.com/sdk/v1.0.4/assure-sdk.js"></script>
+        <script type="text/javascript" src="https://cdn.evidentid.com/sdk/v2.0.1/assure-sdk.js"></script>
         <title>Provide your ServSafe credentials</title>
     </head>
     <body>
-        <script type="text/javascript">
-            // Set up the SDK using the token provided by VerifyAPI.
-            // The token can only be used once!
-            EvidentID.AssureSDK.setUp({
-                environment: EvidentID.AssureSDK.ENVIRONMENTS.DEMO,
-                singleUseToken: '<%= token %>',
-            }).then(() => {
-                document.getElementById('loading').setAttribute('style', 'display: none');
-                document.getElementById('fields').setAttribute('style', 'display: grid');
-            });
-
-            function sendDataToEvident() {
-                const firstname = document.getElementById('firstname').value;
-                const lastname = document.getElementById('lastname').value;
-                const certnumber = document.getElementById('certnumber').value;
-
-                EvidentID.AssureSDK.submitAttributes({
-                    'core.firstname': firstname,
-                    'core.lastname': lastname,
-                    'certifications.servsafe.servsafe_food_handler.certnumber': certnumber,
-                }).then(() => {
-                    document.body.innerHTML = 'Great! Now go back to the e2e-example project and do Step 3.';
-                }).catch((e) => {
-                    alert(e.message);
-                });
-            }
-        </script>
         <p id="loading">Loading...</p>
         <fieldset id="fields" style="display: none">
             First Name:
@@ -44,5 +17,44 @@
 
             <button onclick="sendDataToEvident(event)">Submit!</button>
         </fieldset>
+        <script type="text/javascript">
+            function showForm() {
+                document.getElementById('loading').setAttribute('style', 'display: none');
+                document.getElementById('fields').setAttribute('style', 'display: grid');
+            }
+
+            function showLoadingScreen() {
+                document.getElementById('loading').setAttribute('style', 'display: initial');
+                document.getElementById('fields').setAttribute('style', 'display: none');
+            }
+
+            // Set up the SDK using the token provided by VerifyAPI.
+            // The token can only be used once!
+            EvidentID.AssureSDK.setUp({
+                environment: EvidentID.AssureSDK.ENVIRONMENTS.DEMO,
+                singleUseToken: '<%= token %>',
+            }).then((requestId) => {
+                console.info('Request ID:', requestId);
+                showForm();
+            });
+
+            function sendDataToEvident() {
+                const firstname = document.getElementById('firstname').value;
+                const lastname = document.getElementById('lastname').value;
+                const certnumber = document.getElementById('certnumber').value;
+
+                showLoadingScreen();
+
+                EvidentID.AssureSDK.submitAttributes({
+                    'core.firstname': firstname,
+                    'core.lastname': lastname,
+                    'certifications.servsafe.servsafe_food_handler.certnumber': certnumber,
+                }).then(() => {
+                    document.body.innerHTML = 'Great! Now go back to the example project and run the Step3.js script.';
+                }).catch((e) => {
+                    alert(e.message);
+                });
+            }
+        </script>
     </body>
 </html>
